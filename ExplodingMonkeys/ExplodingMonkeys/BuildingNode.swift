@@ -12,6 +12,8 @@ import SpriteKit
 class BuildingNode: SKSpriteNode {
     var currentImage: UIImage!
     
+    let windowWidth : CGFloat = 15, windowHeight : CGFloat = 20
+    
     func setup() {
         name = "building"
         currentImage = drawBuilding(size)
@@ -26,7 +28,7 @@ class BuildingNode: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = CollisionTypes.Banana.rawValue
     }
     
-    func drawBuildilng(size: CGSize) -> UIImage {
+    func drawBuilding(size: CGSize) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         let context = UIGraphicsGetCurrentContext()
         
@@ -58,8 +60,12 @@ class BuildingNode: SKSpriteNode {
                 } else {
                     CGContextSetFillColorWithColor(context, lightOffColor.CGColor)
                 }
-
+                CGContextFillRect(context, CGRect(x: col, y: row, width: windowWidth, height: windowHeight))
             }
         }
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return img
     }
 }
