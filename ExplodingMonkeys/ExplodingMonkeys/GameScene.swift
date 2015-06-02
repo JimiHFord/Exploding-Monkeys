@@ -8,6 +8,12 @@
 
 import SpriteKit
 
+enum CollisionTypes: UInt32 {
+    case Banana = (1 << 0)
+    case Building = (1 << 1)
+    case Player = (1 << 2)
+}
+
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */

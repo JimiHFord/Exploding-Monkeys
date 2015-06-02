@@ -14,6 +14,10 @@ func RandomInt(#min: Int, #max: Int) -> Int {
 	return Int(arc4random_uniform(UInt32((max - min) + 1))) + min
 }
 
+func RandomBool() -> Bool {
+    return RandomInt(min: 0, max: 1) == 0
+}
+
 func RandomFloat() -> Float {
 	return Float(arc4random()) /  Float(UInt32.max)
 }
