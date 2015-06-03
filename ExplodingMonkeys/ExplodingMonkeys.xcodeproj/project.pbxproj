@@ -17,6 +17,9 @@
 		2C361CD61B1E6FE00086419C /* ExplodingMonkeysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C361CD51B1E6FE00086419C /* ExplodingMonkeysTests.swift */; };
 		2C361CE01B1E71860086419C /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C361CDF1B1E71860086419C /* Helper.swift */; };
 		2C361CE21B1E72B60086419C /* BuildingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C361CE11B1E72B60086419C /* BuildingNode.swift */; };
+		2C361CE41B1E94480086419C /* assets.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 2C361CE31B1E94480086419C /* assets.atlas */; };
+		2C361CE71B1E945F0086419C /* hitBuilding.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2C361CE51B1E945F0086419C /* hitBuilding.sks */; };
+		2C361CE81B1E945F0086419C /* hitPlayer.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2C361CE61B1E945F0086419C /* hitPlayer.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		2C361CD51B1E6FE00086419C /* ExplodingMonkeysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplodingMonkeysTests.swift; sourceTree = "<group>"; };
 		2C361CDF1B1E71860086419C /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		2C361CE11B1E72B60086419C /* BuildingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildingNode.swift; sourceTree = "<group>"; };
+		2C361CE31B1E94480086419C /* assets.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = assets.atlas; sourceTree = "<group>"; };
+		2C361CE51B1E945F0086419C /* hitBuilding.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = hitBuilding.sks; path = assets.atlas/hitBuilding.sks; sourceTree = "<group>"; };
+		2C361CE61B1E945F0086419C /* hitPlayer.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = hitPlayer.sks; path = assets.atlas/hitPlayer.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,9 @@
 				2C361CDF1B1E71860086419C /* Helper.swift */,
 				2C361CE11B1E72B60086419C /* BuildingNode.swift */,
 				2C361CC31B1E6FE00086419C /* Main.storyboard */,
+				2C361CE51B1E945F0086419C /* hitBuilding.sks */,
+				2C361CE61B1E945F0086419C /* hitPlayer.sks */,
+				2C361CE31B1E94480086419C /* assets.atlas */,
 				2C361CC61B1E6FE00086419C /* Images.xcassets */,
 				2C361CC81B1E6FE00086419C /* LaunchScreen.xib */,
 				2C361CB91B1E6FDF0086419C /* Supporting Files */,
@@ -173,6 +182,7 @@
 				TargetAttributes = {
 					2C361CB51B1E6FDF0086419C = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = JF8D4Z686B;
 					};
 					2C361CCE1B1E6FE00086419C = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -204,10 +214,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C361CE81B1E945F0086419C /* hitPlayer.sks in Resources */,
 				2C361CCA1B1E6FE00086419C /* LaunchScreen.xib in Resources */,
 				2C361CC71B1E6FE00086419C /* Images.xcassets in Resources */,
 				2C361CBE1B1E6FE00086419C /* GameScene.sks in Resources */,
+				2C361CE41B1E94480086419C /* assets.atlas in Resources */,
 				2C361CC51B1E6FE00086419C /* Main.storyboard in Resources */,
+				2C361CE71B1E945F0086419C /* hitBuilding.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,9 +371,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ExplodingMonkeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -368,9 +384,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = ExplodingMonkeys/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
