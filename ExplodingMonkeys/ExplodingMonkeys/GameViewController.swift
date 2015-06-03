@@ -26,7 +26,16 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
-
+    var currentGame: GameScene!
+    
+    @IBOutlet weak var angleSlider: UISlider!
+    @IBOutlet weak var angleLabel: UILabel!
+    @IBOutlet weak var velocitySlider: UISlider!
+    @IBOutlet weak var velocityLabel: UILabel!
+    @IBOutlet weak var launchButton: UIButton!
+    @IBOutlet weak var playerLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,6 +52,7 @@ class GameViewController: UIViewController {
             scene.scaleMode = .AspectFill
             
             skView.presentScene(scene)
+            currentGame = scene
         }
     }
 
@@ -65,5 +75,38 @@ class GameViewController: UIViewController {
 
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    
+    @IBAction func angleChanged(sender: UISlider!) {
+        angleLabel.text = "\(Int(angleSlider.value))°"
+    }
+    
+    @IBAction func velocityChanged(sender: UISlider!) {
+        velocityLabel.text = "\(Int(velocitySlider.value))/250"
+    }
+    
+    @IBAction func launch(sender: AnyObject) {
+        angleSlider.hidden = true
+        angleLabel.hidden = true
+        velocitySlider.hidden = true
+        velocityLabel.hidden = true
+        launchButton.hidden = true
+        playerLabel.hidden = true
+        currentGame.launch(angle: Int(angleSlider.value), velocity: Int(velocitySlider.value))
+    }
+    
+    func setPlayerNumber(number: Int) {
+        if number == 1 {
+            playerLabel.text = "<<< PLAYER ONE"
+        } else {
+            playerLabel.text = "PLAYER TWO >>>"
+        }
+        angleSlider.hidden = false
+        angleLabel.hidden = false
+        velocitySlider.hidden = false
+        velocityLabel.hidden = false
+        launchButton.hidden = false
+        playerLabel.hidden = false
     }
 }
