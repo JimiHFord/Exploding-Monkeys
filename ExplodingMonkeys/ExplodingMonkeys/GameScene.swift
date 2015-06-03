@@ -22,7 +22,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var player2: SKSpriteNode!
     var banana: SKSpriteNode!
     
-    var currentPlayer = 1
+    var currentPlayer: Int
+    let startingPlayer: Int
+    
+    convenience override init(size: CGSize) {
+        self.init(size: size, startingPlayer: 1)
+    }
+    
+    init(size: CGSize, startingPlayer: Int) {
+        currentPlayer = startingPlayer
+        self.startingPlayer = startingPlayer
+        super.init(size: size)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        currentPlayer = 1
+        self.startingPlayer = 1
+        super.init(coder: aDecoder)
+    }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -38,7 +55,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        if banana != nil {
+            if banana.position.y < -1000 {
+                banana.removeFromParent()
+                banana = nil
+                reportCurrentPlayer()
+            }
+        }
     }
     
     func createBuildings() {
@@ -70,7 +93,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player1.position = CGPoint(x: player1Building.position.x, y: player1Building.position.y + ((player1Building.size.height + player1.size.height) / 2))
         addChild(player1)
         player2 = SKSpriteNode(imageNamed: "player")
-        player2.name = "player1"
+        player2.name = "player2"
         player2.physicsBody = SKPhysicsBody(circleOfRadius: player2.size.width / 2)
         player2.physicsBody?.categoryBitMask = CollisionTypes.Player.rawValue
         player2.physicsBody?.collisionBitMask = CollisionTypes.Banana.rawValue
@@ -123,6 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let impulse = CGVector(dx: cos(radians) * -speed, dy: sin(radians) * speed)
             banana.physicsBody?.applyImpulse(impulse)
         }
+        changePlayer()
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -140,7 +164,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let firstNode = firstBody.node {
             if let secondNode = secondBody.node {
                 if firstNode.name == "banana" && secondNode.name == "building" {
-                    bananaHitBuilding(secondNode as BuildingNode, atPoint: contact.contactPoint)
+                    bananaHitBuilding(secondNode as! BuildingNode, atPoint: contact.contactPoint)
+                    reportCurrentPlayer()
                 }
                 
                 if firstNode.name == "banana" && secondNode.name == "player1" {
@@ -156,20 +181,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func destroyPlayer(player: SKSpriteNode) {
         let explosionPath = NSBundle.mainBundle().pathForResource("hitPlayer", ofType: "sks")
-        let explosion = NSKeyedUnarchiver.unarchiveObjectWithFile(explosionPath) as SKEmitterNode
+        let explosion = NSKeyedUnarchiver.unarchiveObjectWithFile(explosionPath!) as! SKEmitterNode
         explosion.position = player.position
         addChild(explosion)
         player.removeFromParent()
         banana?.removeFromParent()
-        runAfterDelay(2) { [unowned self] init
-            let newGame = GameScene(size self.size)
+        runAfterDelay(2, { [unowned self] in
+            let newGame = GameScene(size: self.size, startingPlayer: self.startingPlayer == 1 ? 2 : 1)
             newGame.viewController = self.viewController
             self.viewController.currentGame = newGame
-            self.changePlayer()
+            newGame.reportCurrentPlayer()
             
             let transition = SKTransition.doorwayWithDuration(1.5)
             self.view?.presentScene(newGame, transition: transition)
-        }
+        })
     }
     
     func changePlayer() {
@@ -179,9 +204,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             currentPlayer = 1
         }
     }
-        
     
+    func reportCurrentPlayer() {
+        self.viewController.setPlayerNumber(currentPlayer)
+    }
         
+    func bananaHitBuilding(building: BuildingNode, atPoint contactPoint: CGPoint) {
+        let buildingLocation = convertPoint(contactPoint, toNode: building)
+        building.hitAtPoint(buildingLocation)
+        let explosionPath = NSBundle.mainBundle().pathForResource("hitBuilding", ofType: "sks")!
+        let explosion = NSKeyedUnarchiver.unarchiveObjectWithFile(explosionPath) as! SKEmitterNode
+        
+        explosion.position = contactPoint
+        addChild(explosion)
+        
+        banana?.removeFromParent()
+        banana = nil
+    }
+    
     func deg2rad(degrees: Int) -> Double {
         return Double(degrees) * M_PI / 180.0
     }

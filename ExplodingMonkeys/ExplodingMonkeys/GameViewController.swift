@@ -35,6 +35,13 @@ class GameViewController: UIViewController {
     @IBOutlet weak var launchButton: UIButton!
     @IBOutlet weak var playerLabel: UILabel!
     
+    let defaultAngle = 45.0
+    let defaultVelocity = 125.0
+    
+    var currentPlayer: Int = 1
+    
+    var player1values = (45, 125)
+    var player2values = (45, 125)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +59,7 @@ class GameViewController: UIViewController {
             scene.scaleMode = .AspectFill
             
             skView.presentScene(scene)
+            scene.viewController = self
             currentGame = scene
         }
     }
@@ -79,10 +87,18 @@ class GameViewController: UIViewController {
     
     
     @IBAction func angleChanged(sender: UISlider!) {
+        updateAngleText()
+    }
+    
+    func updateAngleText() {
         angleLabel.text = "\(Int(angleSlider.value))°"
     }
     
     @IBAction func velocityChanged(sender: UISlider!) {
+        updateVelocityText()
+    }
+    
+    func updateVelocityText() {
         velocityLabel.text = "\(Int(velocitySlider.value))/250"
     }
     
@@ -93,15 +109,33 @@ class GameViewController: UIViewController {
         velocityLabel.hidden = true
         launchButton.hidden = true
         playerLabel.hidden = true
+        var values = (Int(angleSlider.value), Int(velocitySlider.value))
+        if currentPlayer == 1 {
+            player1values = values
+        } else {
+            player2values = values
+        }
         currentGame.launch(angle: Int(angleSlider.value), velocity: Int(velocitySlider.value))
+    }
+    
+    func setCurrentGame(scene: GameScene, first: Int) {
+        self.currentGame = scene
+        currentPlayer = first
     }
     
     func setPlayerNumber(number: Int) {
         if number == 1 {
             playerLabel.text = "<<< PLAYER ONE"
+            angleSlider.value = Float(player1values.0)
+            velocitySlider.value = Float(player1values.1)
         } else {
             playerLabel.text = "PLAYER TWO >>>"
+            angleSlider.value = Float(player2values.0)
+            velocitySlider.value = Float(player2values.1)
         }
+        updateAngleText()
+        updateVelocityText()
+        currentPlayer = number
         angleSlider.hidden = false
         angleLabel.hidden = false
         velocitySlider.hidden = false
